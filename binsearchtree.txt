@@ -1,0 +1,173 @@
+#include<iostream>
+using namespace std;
+struct node
+{
+  int data;
+  struct node *left;
+  struct node *right;
+};
+typedef struct node *searchtree;
+class bintree
+{
+ public:
+ searchtree insert(searchtree T,int x)
+ {
+  if(T==NULL)
+  {
+   T=new node;
+   T->data=x;
+   T->left=T->right=NULL;
+   cout<<"\nInserted\n";
+  }
+  else if(x<T->data)
+  {
+   T->left=insert(T->left,x);
+  }
+  else if(x>T->data)
+  {
+   T->right=insert(T->right,x);
+  }
+  return T;
+}
+void preorder(searchtree T)
+{
+
+ if(T==NULL)
+ {
+  return;
+   }
+cout<<T->data<<"\n";
+ preorder(T->left);
+ preorder(T->right);
+}
+void inorder(searchtree T)
+{
+
+ if(T==NULL)
+ {
+  return;
+ }
+ inorder(T->left);
+ cout<<T->data<<"\n";
+ inorder(T->right);
+}
+void postorder(searchtree T)
+{
+ if (T==NULL)
+ {
+  return;
+ }
+ postorder(T->left);
+ postorder(T->right);
+ cout<<T->data<<"\n";
+}
+searchtree find(searchtree T,int x)
+{
+ if(T==NULL)
+ {
+  return NULL;
+ }
+ else if(x<T->data)
+{
+ return find(T->left,x);
+}
+else if(x>T->data)
+{
+ return find(T->right,x);
+}
+else
+{
+ return T;
+}
+}
+searchtree findmax(searchtree T)
+{
+ if(T->right!=NULL)
+ {
+  findmax(T->right);
+ }
+ else
+ {
+  return T;
+}
+}
+searchtree findmin(searchtree T)
+{
+ if(T->left!=NULL)
+ {
+  findmin(T->left);
+ }
+ else
+{
+ return T;
+}
+}
+searchtree deleter(searchtree T,int x)
+{
+ if(T==NULL)
+ {
+  cout<<"\nElement not found\n";
+  return NULL;
+   }
+ else if(x<T->data)
+ {
+  T->left=deleter(T->left,x);
+ }
+else if(x>T->data)
+{
+ T->right=deleter(T->right,x);
+}
+else
+{
+ if(T->left&&T->right)
+ {
+  searchtree tempcell=findmin(T->right);
+  T->data=tempcell->data;
+  T->right=deleter(T->right,tempcell->data);
+}
+else if(T->left==NULL)
+{
+ searchtree temp=T;
+ T=T->right;
+
+}
+else if(T->right==NULL)
+{
+ searchtree temp1=T;
+ T=T->left;
+
+}
+return T;
+}
+}
+};
+main()
+{
+ bintree b;
+ searchtree root;
+ root=NULL;
+ root=b.insert(root,10);
+ root=b.insert(root,20);
+ root=b.insert(root,5);
+ cout<<"\nPreorder Traversal\n";
+ b.preorder(root);
+ cout<<"\ninorder Traversal\n";
+ b.inorder(root);
+ cout<<"\nPostorder Traversal\n";
+ b.postorder(root);
+ cout<<"\nFinding...\n";
+ searchtree y=b.find(root,10);
+ cout<<"\nFound at "<<y;
+ cout<<"\nFinding max\n";
+ searchtree z=b.findmax(root);
+cout<<"\nMax element found at "<<z;
+cout<<"\nMax element is "<<z->data;
+ cout<<"\nFinding min\n";
+ searchtree a=b.findmin(root);
+ cout<<"\nMin element found at "<<a;
+ cout<<"\nMin element is"<<a->data;
+cout<<"\nDeleting\n";
+ b.deleter(root,5);
+ b.preorder(root);
+ }
+
